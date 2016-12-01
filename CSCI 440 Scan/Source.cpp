@@ -26,11 +26,11 @@ int main(int argc, char ** argv) {
     }
 
     // Compute the scan on CPU side
-    A_cpu = new int[N + 1];
+    A_cpu = new int[N];
 
-    A_cpu[0] = 0;
-    for (int i = 1; i <= N; i++) {
-        A_cpu[i] = A_cpu[i - 1] + arr[i - 1];
+    A_cpu[0] = arr[0];
+    for (int i = 1; i < N; i++) {
+        A_cpu[i] = A_cpu[i - 1] + arr[i];
     }
 
     // print check raw array and scan output
@@ -39,7 +39,7 @@ int main(int argc, char ** argv) {
         cout << arr[i] << "\t";
     }
     cout << "\nScan array:" << endl;
-    for (int i = 0; i <= N; i++) {
+    for (int i = 0; i < N; i++) {
         cout << A_cpu[i] << "\t";
     }
     cout << endl;
