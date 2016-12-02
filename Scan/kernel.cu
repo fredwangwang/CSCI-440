@@ -22,39 +22,63 @@ int BLOCK_SIZE = 8; // defined blocksize, which is half of the size of the scan 
 // The size of the scan array needs to be power of 2. if not, devides up the scan array to nearest power of 2 and another part
 int XY[2*10]; // XY[2*BLOCK_SIZE] is in shared memory
 
-void Reduction_Parallel_Scan() {
-    /////////////////////////////////////////////
-    // For example, given a scan array of size 8, the Block size should be 4 (8/2);
-    // the reduction is done by split the task into two passes.
-    // For the upper part, here is what's going on:
-    //      The loop will execute (log2(BLOCK_SIZE) + 1) times. In this example, 3 times.
-    //      1st iteration: calculate 1 = 1+0; 3 = 3+2; 5 = 5+4; 7 = 7+6;
-    //      2nd iteration: calculate 3 = 3+1 = 3+2+1+0; 7 = 7+5 = 7+6+5+4
-    //      3rd iteration: calculate 7 = 7+3 = 7+5 + 3+1 = 7+6+5+4 + 3+2+1+0
-    // After the upper part, Index 1,3,7 have the right answer. First pass done.
-    // For the lower part, here is what's going on:
-    //      The loop will execute (log2(BLOCK_SIZE)) times. In this example, 2 times.
-    //      1st iteration: calculate 5 = 5+3 = 5+4 + 3+1 = 5+4 + 3+2 + 1+0
-    //      2nd iteration: calculate 2 = 2+1 = 2+1+0; 4 = 4+3 = 4+3+2+1+0; 6 = 6+5 = 6+5+4+3+2+1+0
-    // Now all the index has the correct answer, reduction done.
-    ///////////////////////////////////////////////
-    // __syncthreads() requires between each iterations, as some thread may go way faster than others causing correctness issue.
-    ///////////////////////////////////////////////
+//void Reduction_Parallel_Scan() {
+//    /////////////////////////////////////////////
+//    // For example, given a scan array of size 8, the Block size should be 4 (8/2);
+//    // the reduction is done by split the task into two passes.
+//    // For the upper part, here is what's going on:
+//    //      The loop will execute (log2(BLOCK_SIZE) + 1) times. In this example, 3 times.
+//    //      1st iteration: calculate 1 = 1+0; 3 = 3+2; 5 = 5+4; 7 = 7+6;
+//    //      2nd iteration: calculate 3 = 3+1 = 3+2+1+0; 7 = 7+5 = 7+6+5+4
+//    //      3rd iteration: calculate 7 = 7+3 = 7+5 + 3+1 = 7+6+5+4 + 3+2+1+0
+//    // After the upper part, Index 1,3,7 have the right answer. First pass done.
+//    // For the lower part, here is what's going on:
+//    //      The loop will execute (log2(BLOCK_SIZE)) times. In this example, 2 times.
+//    //      1st iteration: calculate 5 = 5+3 = 5+4 + 3+1 = 5+4 + 3+2 + 1+0
+//    //      2nd iteration: calculate 2 = 2+1 = 2+1+0; 4 = 4+3 = 4+3+2+1+0; 6 = 6+5 = 6+5+4+3+2+1+0
+//    // Now all the index has the correct answer, reduction done.
+//    ///////////////////////////////////////////////
+//    // __syncthreads() requires between each iterations, as some thread may go way faster than others causing correctness issue.
+//    ///////////////////////////////////////////////
+//
+//    // This is for upper part of the reduction
+//    for (unsigned int stride = 1; stride <= BLOCK_SIZE; stride *= 2) {
+//        int index = (threadIdx.x + 1)*stride * 2 - 1;
+//        if (index < 2 * BLOCK_SIZE)
+//            XY[index] += XY[index - stride];
+//        //__syncthreads();
+//    }
+//
+//    // This is for lower part of the reduction
+//    for (unsigned int stride = BLOCK_SIZE / 2; stride > 0; stride /= 2) {
+//        int index = (threadIdx.x + 1)*stride * 2 + stride - 1;
+//        if (index < 2 * BLOCK_SIZE)
+//            XY[index] += XY[index - stride];
+//        //__syncthreads();
+//    }
+//}
 
-    // This is for upper part of the reduction
+void testIndexCorrect() {
+    cout << "This is for upper part of the reduction" << endl;
     for (unsigned int stride = 1; stride <= BLOCK_SIZE; stride *= 2) {
-        int index = (threadIdx.x + 1)*stride * 2 - 1;
-        if (index < 2 * BLOCK_SIZE)
-            XY[index] += XY[index - stride];
-        //__syncthreads();
+        for (int i = 0; i < INT_MAX; i++) {
+            int index = (i + 1)*stride * 2 - 1;
+            if (index < 2 * BLOCK_SIZE)
+                cout << index << "\t";
+            else break;
+        }
+        cout << endl;
     }
 
-    // This is for lower part of the reduction
+    cout << "This is for lower part of the reduction" << endl;
     for (unsigned int stride = BLOCK_SIZE / 2; stride > 0; stride /= 2) {
-        int index = (threadIdx.x + 1)*stride * 2 + stride - 1;
-        if (index < 2 * BLOCK_SIZE)
-            XY[index] += XY[index - stride];
-        //__syncthreads();
+        for (int i = 0; i < INT_MAX; i++) {
+            int index = (i + 1)*stride * 2 + stride - 1;
+            if (index < 2 * BLOCK_SIZE)
+                cout << index << "\t";
+            else break;
+        }
+        cout << endl;
     }
 }
 
@@ -98,10 +122,12 @@ int main(int argc, char ** argv) {
     }
     cout << endl;
 
+    testIndexCorrect();
 
     delete[] arr;
     delete[] A_cpu;
 }
+
 
 
 //int main()
