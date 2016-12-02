@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8CBF170E-9647-4DED-AC51-1D199630C4F7}</ProjectGuid>
-    <RootNamespace>Sparse_Matrux_Multiplication</RootNamespace>
-    <ProjectName>Sparse Matrux Multiplication</ProjectName>
+    <RootNamespace>Sparse_Matrix_Multiplication</RootNamespace>
+    <ProjectName>Sparse Matrix Multiplication</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -152,7 +152,10 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CudaCompile Include="kernel.cu" />
+    <CudaCompile Include="matrix.cu" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="m1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -4,10 +4,18 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{af19909f-05f7-4126-9fbe-f0d38273bb7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{4ae65ae5-c047-4c57-9f99-7bd16fe25b99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="kernel.cu">
+    <CudaCompile Include="matrix.cu">
       <Filter>Source Files</Filter>
     </CudaCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="m1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

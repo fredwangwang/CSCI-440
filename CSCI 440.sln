@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Scan", "Scan\Scan.vcxproj", "{B74323B6-A02C-434B-A629-3255D2EABDF4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sparse Matrux Multiplication", "Sparse Matrux Multiplication\Sparse Matrux Multiplication.vcxproj", "{8CBF170E-9647-4DED-AC51-1D199630C4F7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sparse Matrix Multiplication", "Sparse Matrix Multiplication\Sparse Matrix Multiplication.vcxproj", "{8CBF170E-9647-4DED-AC51-1D199630C4F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
